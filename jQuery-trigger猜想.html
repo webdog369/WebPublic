@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jjQuery-trigger()方法本质猜想</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .father{
+            width:200px;
+            height: 200px;
+            background: yellowgreen;
+        }
+        .son{
+            width: 100px;
+            height: 100px;
+            background: tomato;
+        }
+    </style>
+    <script src="js/jQuery-3.4.1.js"></script>
+    <script>
+        $(function () {
+            $(".son").click(function (event) {
+                alert("son");
+
+                //阻止事件冒泡
+                //方法1
+                // return false;
+                //方法2
+                // event.stopPropagation();
+            });
+            $(".son").mouseenter(function () {
+                alert("son-enter")
+            });
+            $(".father").click(function () {
+                alert("father")
+            });
+            $("input[type = submit]").click(function () {
+               alert("我是表单type=submit")
+            });
+            $(".one").click(function () {
+               alert("a1") ;
+            });
+            $(".two").click(function () {
+                alert("a2") ;
+            });
+
+            //事件的自动触发.
+            //trigger()方法 (此方法会触发事件冒泡,且会触发默认行为)
+            // $(".son").trigger("mouseenter");
+
+
+            //input 标签触发了form表单的默认事件
+            //$("input[type = submit]").trigger("click")
+
+
+            //a标签的默认事件被拦截
+            // $(".one").trigger("click");
+            //a标签内添加了子元素后 a标签的默认事件未被拦截
+            // $(".two").trigger("click");
+
+
+
+            //triggerHandler()方法  (此方法不会触发事件冒泡和默认行为)
+            // $(".father").triggerHandler("click");
+        })
+    </script>
+</head>
+<body>
+<div class="father">
+    <div class="son"></div>
+</div>
+<form action="http://www.baidu.com">
+    <input type="submit">
+</form>
+<a href="http://www.baidu.com" class="one">百度一下</a>
+<a href="http://www.baidu.com" ><span class="two">百度一下</span></a>
+</body>
+</html>
